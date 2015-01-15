@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">{{selectedFuse.name}}</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeEdit()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="updateFuse()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Name</span>
+          <input type="text" ng-model="selectedFuse.name">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Description</span>
+          <input type="text" ng-model="selectedFuse.description">
+        </label>
+        <label class="item">
+          <button class="button button-block button-stable" type="submit" ng-click="getPhoto()"><i class="icon-left ion-camera"></i> Upload new photo</button>
+          
+        </label>
+        <label class="item">
+          <button class="button button-block button-assertive" type="submit"><i class="ion-refresh icon-left"></i> Update</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

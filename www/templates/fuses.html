@@ -1,0 +1,23 @@
+<ion-view view-title="Fuses">
+  <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="loadFuses()">
+    </ion-refresher>
+    <div class="item item-divider">
+      Your Fuses
+    </div>
+
+    <a class="item item-icon-right" href="" ng-repeat="fuse in fuses">
+      <img ng-src="{{fuse.icon}}" class="avatar">
+      <h3>{{ fuse.name }}</h3>
+      <p>{{ fuse.description }}</p>
+      <i class="icon ion-edit" ng-click="openEdit({{fuse.id}},$event)"></i>
+    </a >
+    <div ng-hide="fuses.length">
+      <div class="item">
+        No fuses found, have you tried pulling down to refresh?
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
