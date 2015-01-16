@@ -7,17 +7,23 @@
     <div class="item item-divider themegrey">
       Your Fuses
     </div>
-
-    <div class="item item-icon-right" ng-repeat="fuse in fuses">
-      <img ng-src="{{fuse.icon}}" class="avatar">
-      <h3>{{ fuse.name }}</h3>
-      <p>{{ fuse.description }}</p>
-      <i class="icon ion-edit" ng-click="openEdit({{fuse.id}},$event)"></i>
-    </div>
-    <div ng-hide="fuses.length">
-      <div class="item">
-        No fuses found, have you tried pulling down to refresh?
+    <ion-list show-delete="false" can-swipe="true">
+      <ion-item class="item-icon-right item-avatar-left" ng-repeat="fuse in fuses">
+          <img ng-src="{{fuse.icon}}">
+        <div class="col">
+          <h3>{{ fuse.name }}</h3>
+          <div class="item-text-wrap">{{ fuse.description }}</div>
+        </div>
+        <i class="icon ion-edit" ng-click="openEdit({{fuse.id}},$event)"></i>
+        <ion-option-button class="button-assertive" ng-click="deleteFuse({{fuse.id}})">
+          Delete
+        </ion-option-button>
+      </ion-item>
+      <div ng-hide="fuses.length">
+        <div class="item">
+          <p>No fuses found, have you tried pulling down to refresh?</p>
+        </div>
       </div>
-    </div>
+    </ion-list>
   </ion-content>
 </ion-view>

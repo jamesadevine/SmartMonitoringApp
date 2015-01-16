@@ -9,11 +9,11 @@
     <div class="list">
       <label class="item item-input">
         <span class="input-label">Name</span>
-        <input type="text" ng-model="selectedFuse.name">
+        <input type="text" ng-model="selectedFuse.name" ng-minlength=3>
       </label>
       <label class="item item-input">
         <span class="input-label">Description</span>
-        <input type="text" ng-model="selectedFuse.description">
+        <input type="text" ng-model="selectedFuse.description" ng-minlength=3 >
       </label>
       <label class="item">
         <button class="button button-block button-stable" ng-click="getPhoto()"><i class="icon-left ion-camera"></i> Upload new photo</button>

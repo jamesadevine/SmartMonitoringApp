@@ -16,13 +16,25 @@ a:visited{
     height: 400px;
     width: 100%;
 }
+
+
+.item-avatar > img:first-child, .item-avatar .item-image, .item-avatar .item-content > img:first-child, .item-avatar .item-content .item-image, .item-avatar-left > img:first-child, .item-avatar-left .item-image, .item-avatar-left .item-content > img:first-child, .item-avatar-left .item-content .item-image {
+    position: absolute;
+    left: 16px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    top: calc(50% - 20px);
+    border-radius: 5px;
+}
+/*
 .avatar {
     float: left;
     max-height: 40px;
     max-width: 40px;
     margin-right: 1em;
     border-radius: 4px;
-}
+}*/
 .center{
   display: -webkit-box;
     display: -moz-box;

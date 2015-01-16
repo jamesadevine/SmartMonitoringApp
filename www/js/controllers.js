@@ -87,6 +87,30 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
   };
 })
 .controller('HomeCtrl', function($scope, $ionicModal, $timeout, UserAPI,$ionicLoading,$state,$ionicPopup,UserService) {
+    
+    $scope.init = function(){
+      FuseAPI.summary(UserService.currentUser().id).then(function(data){
+        console.log("DATA",JSON.stringify(data));
+        if(showLoading){
+          $ionicLoading.hide();
+        }
+        if(!data.error){
+          $scope.fuses = data.fuses;
+          FuseService.storeFuses(data.fuses);
+        }else{
+          $ionicPopup.alert({
+            title: 'Error',
+            template: data.error,
+            buttons: [
+              {
+                text: '<b>Ok</b>',
+                type: 'button-assertive',
+              }
+            ]
+           });
+        }
+      });
+    };
     $scope.chartType = "bar";
 
     $scope.config = {
@@ -138,6 +162,7 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
         "tooltip": "This is a tooltip"
       }]
     };
+    $scope.init();
 })
 .controller('FusesCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
     
@@ -170,30 +195,30 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
         });
       }
 
-      FuseAPI.fuses(UserService.currentUser().id).then(function(data){
-        console.log("DATA",JSON.stringify(data));
-        if(showLoading){
-          $ionicLoading.hide();
-        }
-        if(!data.error){
-          $scope.fuses = data.fuses;
-          FuseService.storeFuses(data.fuses);
-        }else{
-          $ionicPopup.alert({
-            title: 'Error',
-            template: data.error,
-            buttons: [
-              {
-                text: '<b>Ok</b>',
-                type: 'button-assertive',
-              }
-            ]
-           });
-        }
+    FuseAPI.fuses(UserService.currentUser().id).then(function(data){
+      console.log("DATA",JSON.stringify(data));
+      if(showLoading){
+        $ionicLoading.hide();
+      }
+      if(!data.error){
+        $scope.fuses = data.fuses;
+        FuseService.storeFuses(data.fuses);
+      }else{
+        $ionicPopup.alert({
+          title: 'Error',
+          template: data.error,
+          buttons: [
+            {
+              text: '<b>Ok</b>',
+              type: 'button-assertive',
+            }
+          ]
+         });
+      }
     }).finally(function() {
       // Stop the ion-refresher from spinning
       $scope.$broadcast('scroll.refreshComplete');
-     });
+    });
   };
 
 
@@ -226,6 +251,8 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
         }
     });
   };
+
+
 
   $scope.getPhoto = function(image){
     console.log(navigator);
@@ -303,5 +330,56 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     });
 
   };
+
+  $scope.deleteFuse = function(id){
+    $scope.selectedFuse = FuseService.getFuse(id);
+
+    var confirm = $ionicPopup.confirm({
+      title: $scope.selectedFuse.name,
+      template: 'Are you sure you want to delete this fuse?',
+      buttons:[
+        {
+          text: '<b>Cancel</b>'
+        },
+        {
+          text: '<b>Yes</b>',
+          type: 'button-assertive',
+          onTap: function(e) {
+            // Returning a value will cause the promise to resolve with the given value.
+            return "OK";
+          }
+        }]
+    });
+    confirm.then(function(res) {
+      if(res) {
+        $ionicLoading.show({
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: true,
+          showDelay: 0
+        });
+        FuseAPI.remove(UserService.currentUser().id,$scope.selectedFuse.id).then(function(data){
+          console.log("DATA",data);
+          if(!data.error){
+            $scope.loadFuses();
+            $scope.closeEdit();
+          }else{
+            $ionicPopup.alert({
+              title: 'Error',
+              template: data.error,
+              buttons: [
+                {
+                  text: '<b>Ok</b>',
+                  type: 'button-assertive',
+                }
+              ]
+             });
+          }
+          $ionicLoading.hide();
+        });
+      }
+    });
+  };
+
   $scope.init();
 });

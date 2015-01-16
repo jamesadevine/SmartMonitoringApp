@@ -1,108 +1,123 @@
 angular.module('smartfuse.api', ['smartfuse.services'])
 
 .factory( 'FuseAPI', function ($http){
-  var getFuse = function(id,userID){
-    return $http({
-          url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
-          data:{email:email,password:password},
-          method: 'POST',
-          headers:{
-            "Content-Type": "application/json"
-          }
-        }).then(function (response) {
-          console.log("RESP", response);
-         if (response.data.error) {
-             return null;
-         } else {
-             console.log(response.data);
-             return response.data;
-         }
-        }, function(err) {
-          return err.data;
-        }
-    );
-  };
-  var getFuses = function(userID){
-    return $http({
-          url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/fuses',
-          data:{userID:userID},
-          method: 'POST',
-          headers:{
-            "Content-Type": "application/json"
-          }
-        }).then(function (response) {
-          console.log("RESP", response);
-         if (response.data.error) {
-             return null;
-         } else {
-             console.log(response.data);
-             return response.data;
-         }
-        }, function(err) {
-          return err.data;
-        }
-    );
-  };
-
-  var uploadImage = function(userID,fuseID,image){
-    return $http({
-          url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/upload',
-          timeout:10000,
-          data:{userID:userID,
-            fuseID:fuseID,
-            image:image},
-          method: 'POST',
-          headers:{
-            "Content-Type": "application/json"
-          }
-        }).then(function (response) {
-          console.log("RESP", response);
-         if (response.data.error) {
-             return null;
-         } else {
-             console.log(response.data);
-             return response.data;
-         }
-        }, function(err) {
-          return err.data;
-        }
-    );
-  };
-  var editFuse = function(userID,fuseID,fuseName,fuseDescription){
-    return $http({
-          url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/edit',
-          data:{userID:userID,
-            fuseID:fuseID,
-            fuseName:fuseName,
-            fuseDescription:fuseDescription,
-          },
-          method: 'POST',
-          headers:{
-            "Content-Type": "application/json"
-          }
-        }).then(function (response) {
-          console.log("RESP", response);
-         if (response.data.error) {
-             return null;
-         } else {
-             console.log(response.data);
-             return response.data;
-         }
-        }, function(err) {
-          return err.data;
-        }
-    );
-  };
   return {
-    fuse:getFuse,
-    fuses:getFuses,
-    upload:uploadImage,
-    edit:editFuse,
+    fuse:function(id,userID){
+      return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
+            data:{email:email,password:password},
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+          }
+      );
+    },
+    fuses:function(userID){
+      return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/fuses',
+            data:{userID:userID},
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+        });
+    },
+    upload:function(userID,fuseID,image){
+    return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/upload',
+            timeout:10000,
+            data:{userID:userID,
+              fuseID:fuseID,
+              image:image},
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+          });
+    },
+    edit:function(userID,fuseID,fuseName,fuseDescription){
+      return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/edit',
+            data:{userID:userID,
+              fuseID:fuseID,
+              fuseName:fuseName,
+              fuseDescription:fuseDescription,
+            },
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+          });
+    },
+    remove:function(userID,fuseID,fuseName,fuseDescription){
+      return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/remove',
+            data:{userID:userID,
+              fuseID:fuseID
+            },
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+          });
+    }
   };
 })
 
 .factory( 'UserAPI', function ($http,UserService){
-  var login = function(email,password){
+  return {
+    login:function(email,password){
     return $http({
         url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
         data:{email:email,password:password},
@@ -121,15 +136,10 @@ angular.module('smartfuse.api', ['smartfuse.services'])
        }
       }, function(err) {
         return err.data;
-      }
-  );
+      });
+    },
+    register:function(){
 
-  };
-  var register = function(){
-
-  };
-  return {
-    login:login,
-    register:register
+    }
   };
 });
