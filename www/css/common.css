@@ -1,5 +1,5 @@
 h2{
-  color:#D5311E;
+  color:#b4111a;
 }
 a{
   color:#bec0c2;
@@ -12,7 +12,10 @@ a:visited{
   color:#bec0c2;
 }
 
-
+.chart{
+    height: 400px;
+    width: 100%;
+}
 .avatar {
     float: left;
     max-height: 40px;

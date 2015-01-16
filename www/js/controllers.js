@@ -1,6 +1,9 @@
 angular.module('smartfuse.controllers', ['smartfuse.api'])
 
-.controller('LoginCtrl', function($scope, $ionicModal, $timeout, UserAPI,$ionicLoading,$state,$ionicPopup) {
+.controller('LoginCtrl', function($scope, $ionicModal, $timeout,UserService, UserAPI,$ionicLoading,$state,$ionicPopup) {
+
+  if(UserService.isLoggedIn())
+    $state.transitionTo("app.home");
 
   // Form data for the login modal
   $scope.loginData = {};
@@ -83,7 +86,59 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     
   };
 })
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout, UserAPI,$ionicLoading,$state,$ionicPopup,UserService) {
+    $scope.chartType = "bar";
 
+    $scope.config = {
+      "labels": false,
+      "title": "Products",
+      "legend": {
+        "display": true,
+        "position": "right"
+      },
+      colors:["#4b4b4b","#dedede","#296bc4"],
+      "innerRadius": 0,
+      "lineLegend": "lineEnd"
+    };
+
+    /*$scope.config = config = {
+      title: 'TEST', // chart title. If this is false, no title element will be created.
+      tooltips: true,
+      labels: false, // labels on data points
+      // exposed events
+      //mouseover: function() {},
+      //mouseout: function() {},
+      //click: function() {},
+      // legend config
+      legend: {
+        display: true, // can be either 'left' or 'right'.
+        position: 'left',
+        // you can have html in series name
+        //htmlEnabled: false
+      },
+      // override this array if you're not happy with default colors
+      //colors: [],
+      innerRadius: 0, // Only on pie Charts
+      lineLegend: 'lineEnd', // Only on line Charts
+      lineCurveType: 'cardinal', // change this as per d3 guidelines to avoid smoothline
+      isAnimate: true, // run animations while rendering chart
+      yAxisTickFormat: 's', //refer tickFormats in d3 to edit this value
+      xAxisMaxTicks: 7, // Optional: maximum number of X axis ticks to show if data points exceed this number
+      waitForHeightAndWidth: false // if true, it will not throw an error when the height or width are not defined (e.g. while creating a modal form), and it will be keep watching for valid height and width values
+    };*/
+    $scope.chartData ={
+      series: ["Sales", "Income", "Expense"],
+      data:[{
+        "x": "Computers",
+        "y": [
+          54,
+          289,
+          879
+        ],
+        "tooltip": "This is a tooltip"
+      }]
+    };
+})
 .controller('FusesCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
     
 
@@ -94,6 +149,14 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       console.log("POPOVER ",$scope.editFusePopover);
     });
   
+
+    $scope.init = function(){
+      if(FuseService.isCached()){
+        $scope.fuses = FuseService.fuses();
+      }else{
+        $scope.loadFuses(true);
+      }
+    };
 
     $scope.loadFuses = function(showLoading){
       console.log("loading fuses");
@@ -169,7 +232,7 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     try{
       navigator.camera.getPicture(uploadPicture, function(err) {
             $ionicPopup.alert({
-              title: 'Error',
+              templateitle: 'Error',
               template: err,
               buttons: [
                 {
@@ -184,7 +247,8 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
             destinationType: 0,
             sourceType: Camera.PictureSourceType.CAMERA,
             encodingType: Camera.EncodingType.PNG,
-            correctOrientation:true
+            correctOrientation:true,
+            allowEdit:true
           });
     }catch(err){
       $ionicPopup.alert({
@@ -239,5 +303,5 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     });
 
   };
-  $scope.loadFuses(true);
+  $scope.init();
 });

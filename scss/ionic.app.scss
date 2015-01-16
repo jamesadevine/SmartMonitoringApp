@@ -15,7 +15,19 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
-$assertive:                       #D5311E !default;
+$assertive:                       #b4111a !default;
+
+$dark: #4b4b4b;
+$themegrey:#dedede;
+
+.menu-dark {
+  background-color: $dark !important;
+}
+
+.themegrey {
+  background-color: $themegrey !important;
+}
+
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;

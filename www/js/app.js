@@ -3,18 +3,21 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('smartfuse', ['ionic', 'smartfuse.controllers','smartfuse.api','smartfuse.services'])
+angular.module('smartfuse', ['ionic','angularCharts', 'smartfuse.controllers','smartfuse.api','smartfuse.services'])
 
 .run(function($ionicPlatform,$rootScope,$state,UserService) {
+  
   var routesThatDontRequireAuth = ['/login'];
 
   // check if current location matches route  
   var routeClean = function (route) {
-    return _.find(routesThatDontRequireAuth,
+    return (_.find(routesThatDontRequireAuth,
       function (noAuthRoute) {
         return _.str.startsWith(route, noAuthRoute);
-      });
+      }) === undefined)?false:true;
   };
+
+  
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -22,17 +25,25 @@ angular.module('smartfuse', ['ionic', 'smartfuse.controllers','smartfuse.api','s
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
-    if (window.StatusBar) {
+    /*if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+    }*/
+    try{
+      $cordovaStatusBar.style(1); //Light
+    }catch(err){
+      console.log("cordovaStatusBar not supported");
     }
   });
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
     //console.log(toState,UserService.isLoggedIn());
     //console.log(UserService.currentUser());
-    
 
-    if (!routeClean(toState.url) && !UserService.isLoggedIn()) {
+    console.log(routeClean("/login"));
+
+    console.log("tostate ",toState.url," logged in? ",UserService.isLoggedIn()," routeClean ",routeClean(toState.url));
+    if(!UserService.isLoggedIn() && !routeClean(toState.url)) {
+      console.log("shouldn't be true!!");
       // redirect back to login
       event.preventDefault();
       $state.transitionTo('login');
@@ -60,7 +71,8 @@ angular.module('smartfuse', ['ionic', 'smartfuse.controllers','smartfuse.api','s
     url: "/home",
     views: {
       'menuContent': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/home.html",
+        controller:"HomeCtrl"
       }
     }
   })
