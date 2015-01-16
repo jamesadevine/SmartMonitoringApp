@@ -1,8 +1,9 @@
 angular.module('smartfuse.FuseService', [])
 
 .factory( 'FuseService', function() {
+
   var fuses = JSON.parse(window.localStorage['fuses']||null);
-  console.log("Fuses ",fuses);
+
   return {
     storeFuses:function(fuses){
       window.localStorage['fuses'] = JSON.stringify(fuses);

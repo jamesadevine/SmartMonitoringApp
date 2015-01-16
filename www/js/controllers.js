@@ -86,7 +86,6 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
 
 .controller('FusesCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
     
-    $scope.editData = {};
 
     $ionicModal.fromTemplateUrl('templates/editfuse.html', {
       scope: $scope,
@@ -96,10 +95,10 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     });
   
 
-    $scope.loadFuses = function(){
+    $scope.loadFuses = function(showLoading){
       console.log("loading fuses");
       console.log(FuseService.isCached());
-      if(!FuseService.isCached()){
+      if(showLoading){
         $ionicLoading.show({
           content: 'Loading',
           animation: 'fade-in',
@@ -109,8 +108,8 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       }
 
       FuseAPI.fuses(UserService.currentUser().id).then(function(data){
-        console.log("DATA",data);
-        if(!FuseService.isCached()){
+        console.log("DATA",JSON.stringify(data));
+        if(showLoading){
           $ionicLoading.hide();
         }
         if(!data.error){
@@ -135,28 +134,70 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
   };
 
 
-  $scope.uploadPicture = function(uri){
-    console.log(uri);
+  var uploadPicture = function(b64){
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in',
+      showBackdrop: true,
+      showDelay: 0
+    });
+    console.log(JSON.stringify(b64));
+
+    FuseAPI.upload(UserService.currentUser().id,$scope.selectedFuse.id,b64).then(function(data){
+        console.log("DATA",JSON.stringify(data));
+        $ionicLoading.hide();
+        if(!data.error){
+          $scope.loadFuses();
+          $scope.closeEdit();
+        }else{
+          $ionicPopup.alert({
+            title: 'Error',
+            template: data.error,
+            buttons: [
+              {
+                text: '<b>Ok</b>',
+                type: 'button-assertive',
+              }
+            ]
+           });
+        }
+    });
   };
 
   $scope.getPhoto = function(image){
     console.log(navigator);
-    navigator.camera.getPicture(function(imageURI) {
-
-      // imageURI is the URL of the image that we can use for
-      // an <img> element or backgroundImage.
-
-    }, function(err) {
-
-      // Ruh-roh, something bad happened
-      
-    },
-        {
-        quality: 50,
-        destinationType: 0,
-        sourceType: Camera.PictureSourceType.CAMERA,
-        encodingType: Camera.EncodingType.PNG
-        });
+    try{
+      navigator.camera.getPicture(uploadPicture, function(err) {
+            $ionicPopup.alert({
+              title: 'Error',
+              template: err,
+              buttons: [
+                {
+                  text: '<b>Ok</b>',
+                  type: 'button-assertive',
+                }
+              ]
+             });
+          },
+          {
+            quality: 30,
+            destinationType: 0,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            encodingType: Camera.EncodingType.PNG,
+            correctOrientation:true
+          });
+    }catch(err){
+      $ionicPopup.alert({
+        title: 'Error',
+        template: "Your platform doesn't support this feature.",
+        buttons: [
+          {
+            text: '<b>Ok</b>',
+            type: 'button-assertive',
+          }
+        ]
+      });
+    }
   };
   
   $scope.openEdit = function(id,$event){
@@ -169,9 +210,34 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
   };
   $scope.updateFuse = function(){
     console.log($scope.selectedFuse);
-  };
-  $scope.loadFuses();
-})
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in',
+      showBackdrop: true,
+      showDelay: 0
+    });
+      
+    FuseAPI.edit(UserService.currentUser().id,$scope.selectedFuse.id,$scope.selectedFuse.name,$scope.selectedFuse.description).then(function(data){
+      console.log("DATA",data);
+      if(!data.error){
+        $scope.loadFuses();
+        $scope.closeEdit();
+      }else{
+        $ionicPopup.alert({
+          title: 'Error',
+          template: data.error,
+          buttons: [
+            {
+              text: '<b>Ok</b>',
+              type: 'button-assertive',
+            }
+          ]
+         });
+      }
+      $ionicLoading.hide();
+    });
+
+  };
+  $scope.loadFuses(true);
 });

@@ -1,4 +1,4 @@
-angular.module('smartfuse.api', ['smartfuse.UserService','smartfuse.FuseService'])
+angular.module('smartfuse.api', ['smartfuse.services'])
 
 .factory( 'FuseAPI', function ($http){
   var getFuse = function(id,userID){
@@ -43,9 +43,61 @@ angular.module('smartfuse.api', ['smartfuse.UserService','smartfuse.FuseService'
         }
     );
   };
+
+  var uploadImage = function(userID,fuseID,image){
+    return $http({
+          url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/upload',
+          timeout:10000,
+          data:{userID:userID,
+            fuseID:fuseID,
+            image:image},
+          method: 'POST',
+          headers:{
+            "Content-Type": "application/json"
+          }
+        }).then(function (response) {
+          console.log("RESP", response);
+         if (response.data.error) {
+             return null;
+         } else {
+             console.log(response.data);
+             return response.data;
+         }
+        }, function(err) {
+          return err.data;
+        }
+    );
+  };
+  var editFuse = function(userID,fuseID,fuseName,fuseDescription){
+    return $http({
+          url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/edit',
+          data:{userID:userID,
+            fuseID:fuseID,
+            fuseName:fuseName,
+            fuseDescription:fuseDescription,
+          },
+          method: 'POST',
+          headers:{
+            "Content-Type": "application/json"
+          }
+        }).then(function (response) {
+          console.log("RESP", response);
+         if (response.data.error) {
+             return null;
+         } else {
+             console.log(response.data);
+             return response.data;
+         }
+        }, function(err) {
+          return err.data;
+        }
+    );
+  };
   return {
     fuse:getFuse,
-    fuses:getFuses
+    fuses:getFuses,
+    upload:uploadImage,
+    edit:editFuse,
   };
 })
 
