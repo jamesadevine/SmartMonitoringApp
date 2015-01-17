@@ -43,6 +43,26 @@ angular.module('smartfuse.api', ['smartfuse.services'])
             return err.data;
         });
     },
+    summary:function(userID,date){
+      return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/fuses/summary',
+            data:{userID:userID,date:date},
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+        });
+    },
     upload:function(userID,fuseID,image){
     return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/upload',

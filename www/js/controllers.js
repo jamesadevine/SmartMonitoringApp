@@ -86,17 +86,79 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     
   };
 })
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout, UserAPI,$ionicLoading,$state,$ionicPopup,UserService) {
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService) {
     
+    var summaryTitle= "Average Energy Consumption:";
+    
+    var currentDate = moment().format("DD-MM-YYYY");
+
+    function dateGenerator(){
+      var dateArray = [];
+      for(var i=0;i<15;i++)
+        dateArray.push(moment().subtract(i,'days').format("DD-MM-YYYY"));
+      console.log(dateArray);
+      return dateArray;
+    }
+
+    $scope.dates = dateGenerator();
+    $scope.selectedItem = $scope.dates[0];
+
+    $scope.chartType = "bar";
+
+    $scope.config = {
+      "labels": false,
+      "title": summaryTitle,
+      colors:["#296bc4","#4b4b4b","#dedede"],
+      //"innerRadius": 0,
+      axisFormat:".02f",
+      "lineLegend": "lineEnd"
+    };
     $scope.init = function(){
-      FuseAPI.summary(UserService.currentUser().id).then(function(data){
+      $scope.loadSummary(currentDate,true);
+    };
+    $scope.loadSummary = function(date,showLoading){
+      $scope.config.title=summaryTitle+" "+date;
+      if(showLoading){
+        $ionicLoading.show({
+          content: 'Loading',
+          animation: 'fade-in',
+          showBackdrop: true,
+          showDelay: 0
+        });
+      }
+      FuseAPI.summary(UserService.currentUser().id,date).then(function(data){
         console.log("DATA",JSON.stringify(data));
+        
         if(showLoading){
           $ionicLoading.hide();
         }
+
         if(!data.error){
-          $scope.fuses = data.fuses;
-          FuseService.storeFuses(data.fuses);
+
+          var summaryData= data.fuses;
+
+          var names = [];
+
+          var datapoints = [];
+
+          for(var i = 0;i<summaryData.length;i++){
+            var currentSummary = summaryData[i];
+            var tempobject = {};
+            tempobject.x=currentSummary.name;
+            tempobject.y=[];
+            var total = 0;
+            for(var j = 0;j<currentSummary.data.length;j++){
+              total+=currentSummary.data[j].value;
+            }
+
+            tempobject.y.push(Number(total/currentSummary.data.length));
+            datapoints.push(tempobject);
+          }
+          console.log("actual ",datapoints);
+          $scope.chartData ={
+            series: ["names"],
+            data:datapoints
+          };
         }else{
           $ionicPopup.alert({
             title: 'Error',
@@ -109,58 +171,10 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
             ]
            });
         }
+      }).finally(function() {
+        // Stop the ion-refresher from spinning
+        $scope.$broadcast('scroll.refreshComplete');
       });
-    };
-    $scope.chartType = "bar";
-
-    $scope.config = {
-      "labels": false,
-      "title": "Products",
-      "legend": {
-        "display": true,
-        "position": "right"
-      },
-      colors:["#4b4b4b","#dedede","#296bc4"],
-      "innerRadius": 0,
-      "lineLegend": "lineEnd"
-    };
-
-    /*$scope.config = config = {
-      title: 'TEST', // chart title. If this is false, no title element will be created.
-      tooltips: true,
-      labels: false, // labels on data points
-      // exposed events
-      //mouseover: function() {},
-      //mouseout: function() {},
-      //click: function() {},
-      // legend config
-      legend: {
-        display: true, // can be either 'left' or 'right'.
-        position: 'left',
-        // you can have html in series name
-        //htmlEnabled: false
-      },
-      // override this array if you're not happy with default colors
-      //colors: [],
-      innerRadius: 0, // Only on pie Charts
-      lineLegend: 'lineEnd', // Only on line Charts
-      lineCurveType: 'cardinal', // change this as per d3 guidelines to avoid smoothline
-      isAnimate: true, // run animations while rendering chart
-      yAxisTickFormat: 's', //refer tickFormats in d3 to edit this value
-      xAxisMaxTicks: 7, // Optional: maximum number of X axis ticks to show if data points exceed this number
-      waitForHeightAndWidth: false // if true, it will not throw an error when the height or width are not defined (e.g. while creating a modal form), and it will be keep watching for valid height and width values
-    };*/
-    $scope.chartData ={
-      series: ["Sales", "Income", "Expense"],
-      data:[{
-        "x": "Computers",
-        "y": [
-          54,
-          289,
-          879
-        ],
-        "tooltip": "This is a tooltip"
-      }]
     };
     $scope.init();
 })
