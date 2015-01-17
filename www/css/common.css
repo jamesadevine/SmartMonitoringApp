@@ -27,6 +27,24 @@ a:visited{
     top: calc(50% - 20px);
     border-radius: 5px;
 }
+.house-wrap{
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    height:110px;
+    width:100%;
+}
+.house-wrap p{
+    text-wrap:normal;
+}
+.house-selected{
+    border: 5px solid #b4111a;
+}
+.medium{
+    font-size: 40px;
+}
+.large{
+    font-size: 40px;
+}
 /*
 .avatar {
     float: left;

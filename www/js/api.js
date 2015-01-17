@@ -138,28 +138,48 @@ angular.module('smartfuse.api', ['smartfuse.services'])
 .factory( 'UserAPI', function ($http,UserService){
   return {
     login:function(email,password){
-    return $http({
-        url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
-        data:{email:email,password:password},
-        method: 'POST',
-        headers:{
-          "Content-Type": "application/json"
-        }
-      }).then(function (response) {
-        console.log("RESP", response);
-       if (response.data.error) {
-           return null;
-       } else {
-           console.log("RESP2",response.data.user);
-           UserService.login(response.data.user);
-           return response.data;
-       }
-      }, function(err) {
-        return err.data;
-      });
+      return $http({
+          url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
+          data:{email:email,password:password},
+          method: 'POST',
+          headers:{
+            "Content-Type": "application/json"
+          }
+        }).then(function (response) {
+          console.log("RESP", response);
+         if (response.data.error) {
+             return null;
+         } else {
+             console.log("RESP2",response.data.user);
+             UserService.login(response.data.user);
+             return response.data;
+         }
+        }, function(err) {
+          return err.data;
+        });
     },
     register:function(){
 
+    },
+    update:function(id,name,email,countryCode,houseSize){
+      return $http({
+          url:'http://scc-devine.lancs.ac.uk:8000/api/user/update',
+          data:{id:id,name:email,email:email,countryCode:countryCode,houseSize:houseSize},
+          method: 'POST',
+          headers:{
+            "Content-Type": "application/json"
+          }
+        }).then(function (response) {
+          console.log("RESP", response);
+         if (response.data.error) {
+             return null;
+         } else {
+             console.log("RESP2",response.data.user);
+             return response.data;
+         }
+        }, function(err) {
+          return err.data;
+        });
     }
   };
 });

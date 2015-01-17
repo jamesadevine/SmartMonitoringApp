@@ -13,7 +13,17 @@
           </option>
         </select>
       </div>
+      <div class="item">
+        <div ng-show="chartData.data.length" ac-chart="chartType" ac-data="chartData" ac-config="config" id='chart' class='col chart'></div>
+        <div ng-show="!chartData.data.length">
+          <div class="item-text-wrap">
+            <p>No fuse data is available for this date!</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div ac-chart="chartType" ac-data="chartData" ac-config="config" id='chart' class='col chart'></div>
+    <div class="bar bar-footer bar-light" ng-show="chartData.data.lastUpdated">
+      <div>Last Synced: {{chartData.data.lastUpdated}}</div>
+    </div>
   </ion-content>
 </ion-view>

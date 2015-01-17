@@ -5,11 +5,14 @@
       on-refresh="loadFuses()">
     </ion-refresher>
     <div class="item item-divider themegrey">
-      Your Fuses
+      <div class="item item-divider item-right themegrey row ">
+          <div>Your Fuses</div>
+          
+      </div>
     </div>
     <ion-list show-delete="false" can-swipe="true">
       <ion-item class="item-icon-right item-avatar-left" ng-repeat="fuse in fuses">
-          <img ng-src="{{fuse.icon}}">
+        <img ng-src="{{fuse.icon}}" ng-if="fuse.icon"/>
         <div class="col">
           <h3>{{ fuse.name }}</h3>
           <div class="item-text-wrap">{{ fuse.description }}</div>
@@ -20,10 +23,13 @@
         </ion-option-button>
       </ion-item>
       <div ng-hide="fuses.length">
-        <div class="item">
+        <div class="item item-text-wrap">
           <p>No fuses found, have you tried pulling down to refresh?</p>
         </div>
       </div>
     </ion-list>
   </ion-content>
+  <div class="bar bar-footer bar-light" ng-show="fuses.lastUpdated" ng-model="fuses">
+      <div>Last Synced: {{fuses.lastUpdated}}</div>
+  </div>
 </ion-view>

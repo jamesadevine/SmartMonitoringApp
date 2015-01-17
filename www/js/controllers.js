@@ -86,9 +86,48 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     
   };
 })
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService) {
+.controller('ProfileCtrl', function($scope, $ionicModal, $timeout, UserAPI,$ionicLoading,$state,$ionicPopup,UserService) {
+    $scope.user = UserService.currentUser();
+    $scope.countryCodes = [
+      "uk",
+      "us"
+    ];
+    $scope.setHouseSize = function(size){
+      console.log(size);
+      $scope.user.houseSize = size;
+    };
+    $scope.updateUser = function(){
+      UserService.login($scope.user);
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        showDelay: 0
+      });
+      UserAPI.update($scope.user.id,$scope.user.name,$scope.user.email,$scope.user.countryCode,$scope.user.houseSize).then(function(data){
+        console.log("DATA",data);
+        $ionicLoading.hide();
+        if(!data.error){
+          $scope.closeLogin();
+          $state.go('app.home');
+        }else{
+          $ionicPopup.alert({
+            title: 'Error',
+            template: data.error,
+            buttons: [
+              {
+                text: '<b>Ok</b>',
+                type: 'button-assertive',
+              }
+            ]
+           });
+        }
+      });
+    };
+})
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,CacheService) {
     
-    var summaryTitle= "Average Energy Consumption:";
+    var summaryTitle= "Ave. Energy Consumption:";
     
     var currentDate = moment().format("DD-MM-YYYY");
 
@@ -106,17 +145,16 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     $scope.chartType = "bar";
 
     $scope.config = {
-      "labels": false,
+      "labels": true,
       "title": summaryTitle,
       colors:["#296bc4","#4b4b4b","#dedede"],
-      //"innerRadius": 0,
       axisFormat:".02f",
       "lineLegend": "lineEnd"
     };
     $scope.init = function(){
       $scope.loadSummary(currentDate,true);
     };
-    $scope.loadSummary = function(date,showLoading){
+    $scope.loadSummary = function(date,showLoading,notCached){
       $scope.config.title=summaryTitle+" "+date;
       if(showLoading){
         $ionicLoading.show({
@@ -126,6 +164,7 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
           showDelay: 0
         });
       }
+
       FuseAPI.summary(UserService.currentUser().id,date).then(function(data){
         console.log("DATA",JSON.stringify(data));
         
@@ -153,12 +192,14 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
 
             tempobject.y.push(Number(total/currentSummary.data.length));
             datapoints.push(tempobject);
+            datapoints.lastUpdated=currentDate;
           }
           console.log("actual ",datapoints);
           $scope.chartData ={
-            series: ["names"],
+            series: ["Names"],
             data:datapoints
           };
+          $scope.chartType = "bar";
         }else{
           $ionicPopup.alert({
             title: 'Error',
@@ -185,7 +226,6 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       scope: $scope,
     }).then(function(popover) {
       $scope.editFusePopover = popover;
-      console.log("POPOVER ",$scope.editFusePopover);
     });
   
 
@@ -215,6 +255,7 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
         $ionicLoading.hide();
       }
       if(!data.error){
+        data.fuses.lastUpdated=moment().format("DD-MM-YY");
         $scope.fuses = data.fuses;
         FuseService.storeFuses(data.fuses);
       }else{

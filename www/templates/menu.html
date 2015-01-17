@@ -26,7 +26,11 @@
           <i class="icon ion-battery-full"></i>
           My Fuses
         </ion-item>
-        <ion-item nav-clear class="item-dark item-icon-left" ng-controller="LogoutCtrl" ng-click="logout()">
+        <ion-item nav-clear class="item-dark item-icon-left" menu-close href="#/app/profile">
+          <i class="icon ion-person"></i>
+          Profile
+        </ion-item>
+        <ion-item nav-clear class="item-dark item-icon-left" menu-close ng-controller="LogoutCtrl" ng-click="logout()">
           <i class="icon ion-key"></i>
           Logout
         </ion-item>

@@ -3,6 +3,7 @@ angular.module('smartfuse.services', [])
   return {
     store:function(object, cacheName){
       console.log("Storing object ",object," with name: "+cacheName);
+      object.lastUpdated = moment().format("DD-MM-YY");
       window.localStorage[cacheName] = JSON.stringify(object);
     },
     get:function(cacheName){
