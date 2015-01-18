@@ -8,7 +8,7 @@ angular.module('smartfuse.services', [])
     },
     get:function(cacheName){
       console.log("Fetching object with name: "+cacheName);
-      return window.localStorage[cacheName];
+      return JSON.parse(window.localStorage[cacheName]||null);
     },
     delete: function(cacheName) {
       console.log("Deleting object with name: "+cacheName);
@@ -17,7 +17,7 @@ angular.module('smartfuse.services', [])
   };
 })
 .factory( 'UserService', function(CacheService) {
-  var currentUser = JSON.parse(CacheService.get('user')||null);
+  var currentUser = CacheService.get('user');
   console.log("CURRENT USER ",currentUser);
   return {
     login:function(user){
@@ -43,7 +43,7 @@ angular.module('smartfuse.services', [])
 })
 .factory( 'FuseService', function(CacheService) {
 
-  var fuses = JSON.parse(CacheService.get('fuses')||null);
+  var fuses = CacheService.get('fuses');
 
   return {
     storeFuses:function(newfuses){
@@ -64,6 +64,22 @@ angular.module('smartfuse.services', [])
     },
     fuses: function() {
       return fuses;
+    },
+    storeSummary:function(date,summary){
+      console.log("storing summary: ",summary);
+      CacheService.store(summary,"summary"+date);
+    },
+    getSummary:function(date){
+      return CacheService.get("summary"+date);
     }
   };
+})
+.factory( 'SocketService', function(socketFactory,UserService) {
+  var socket = io.connect("http://scc-devine.lancs.ac.uk:8000");
+  var socketInstance = socketFactory({
+      ioSocket:socket
+    });
+  socketInstance.emit('setUserID',{userid:UserService.currentUser().id});
+  socketInstance.forward('dataAdded');
+  return socketInstance;
 });

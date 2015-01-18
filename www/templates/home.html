@@ -2,7 +2,7 @@
   <ion-content>
     <ion-refresher
       pulling-text="Pull to refresh..."
-      on-refresh="loadSummary(selectedItem)">
+      on-refresh="loadSummary(selectedItem,true)">
     </ion-refresher>
     <div class="list">
       <div class="item item-divider item-select themegrey">
@@ -14,17 +14,31 @@
         </select>
       </div>
       <div class="item">
-        <div ng-show="chartData.data.length" ac-chart="chartType" ac-data="chartData" ac-config="config" id='chart' class='col chart'></div>
-        <div ng-show="!chartData.data.length">
+        <div class="max-chart">
+          <label>
+            Average Energy Consumption per Fuse
+          </label>
+          <canvas width='100%' height='100%' class="chart chart-bar max-chart" data="data" options="options" labels="labels" ></canvas>
+        </div>
+        <div ng-show="data[0].length===0">
           <div class="item-text-wrap">
             <p>No fuse data is available for this date!</p>
           </div>
         </div>
       </div>
-    </div>
-    <canvas width='1200' height='300' id="hero-bar" class="chart chart-line chart-xl" data="data" options="options" labels="labels"></canvas>
-    <div class="bar bar-footer bar-light" ng-show="chartData.data.lastUpdated">
-      <div>Last Synced: {{chartData.data.lastUpdated}}</div>
+      <div class="item">
+        <div class="max-chart">
+          <label>
+            Average Price per Fuse per Day
+          </label>
+          <canvas width='100%' height='100%' class="chart chart-bar max-chart" data="priceData" options="options" labels="labels" ng-hide="data[0].length===0"></canvas>
+        </div>
+        <div ng-show="data[0].length===0">
+          <div class="item-text-wrap">
+            <p>No fuse data is available for this date!</p>
+          </div>
+        </div>
+      </div>
     </div>
   </ion-content>
 </ion-view>

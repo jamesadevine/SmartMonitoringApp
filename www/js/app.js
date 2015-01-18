@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('smartfuse', ['ionic','angularCharts','chart.js', 'smartfuse.controllers','smartfuse.api','smartfuse.services'])
+angular.module('smartfuse', ['ionic','btford.socket-io','chart.js', 'smartfuse.controllers','smartfuse.api','smartfuse.services'])
 
 .run(function($ionicPlatform,$rootScope,$state,UserService) {
   
@@ -72,7 +72,8 @@ angular.module('smartfuse', ['ionic','angularCharts','chart.js', 'smartfuse.cont
     views: {
       'menuContent': {
         templateUrl: "templates/home.html",
-        controller:"HomeCtrl"
+        controller:"HomeCtrl",
+        reload:true
       }
     }
   })

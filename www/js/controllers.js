@@ -125,18 +125,23 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       });
     };
 })
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,CacheService) {
-    
+.controller('HomeCtrl', function($rootScope,$scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,CacheService,FuseService) {
+    //$state.go($state.current, {}, {reload: true});
 
-    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-    $scope.series = ['Series A', 'Series B'];
-    $scope.data = [
-      [65, 59, 80, 81, 56, 55, 40],
-      [28, 48, 40, 19, 86, 27, 90]
-    ];
-
-    var summaryTitle= "Ave. Energy Consumption:";
-    
+   /* $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+      console.log("TEST")
+       if(toState.url == '/home'){
+        $scope.init(); 
+        //$state.go($state.current, {}, {reload: true});
+        console.log("should be reloading?");
+       }
+        
+    });
+    /*
+    $scope.labels=[];
+    $scope.data = [[]];
+    $scope.priceData= [[]];
+    */
     var currentDate = moment().format("DD-MM-YYYY");
 
     function dateGenerator(){
@@ -150,20 +155,16 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     $scope.dates = dateGenerator();
     $scope.selectedItem = $scope.dates[0];
 
-    $scope.chartType = "bar";
-
-    $scope.config = {
-      "labels": true,
-      "title": summaryTitle,
-      colors:["#296bc4","#4b4b4b","#dedede"],
-      axisFormat:".02f",
-      "lineLegend": "lineEnd"
-    };
     $scope.init = function(){
-      $scope.loadSummary(currentDate,true);
+      console.log("init");
+      $scope.loadSummary(currentDate);
     };
-    $scope.loadSummary = function(date,showLoading,notCached){
-      $scope.config.title=summaryTitle+" "+date;
+    $scope.loadSummary = function(date,refresh){
+      if(FuseService.getSummary(date)&&!refresh){
+        showLoading =false;
+      }else{
+        showLoading=true;
+      }
       if(showLoading){
         $ionicLoading.show({
           content: 'Loading',
@@ -172,70 +173,85 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
           showDelay: 0
         });
       }
+      if(!showLoading){
+        var cached = FuseService.getSummary(date);
+        console.log("cached: ",cached.names);
+        $scope.labels=cached.labels;
+        $scope.data = cached.data;
+        $scope.priceData= cached.priceData;
+      }else{
+        FuseAPI.summary(UserService.currentUser().id,date).then(function(data){
+          console.log("DATA",JSON.stringify(data));
+          
+          var currentUser = UserService.currentUser();
 
-      FuseAPI.summary(UserService.currentUser().id,date).then(function(data){
-        console.log("DATA",JSON.stringify(data));
-        
-        if(showLoading){
-          $ionicLoading.hide();
-        }
-
-        if(!data.error){
-
-          var summaryData= data.fuses;
-
-          var names = [];
-
-          var datapoints = [];
-
-          for(var i = 0;i<summaryData.length;i++){
-            var currentSummary = summaryData[i];
-            var tempobject = {};
-            tempobject.x=currentSummary.name;
-            tempobject.y=[];
-            var total = 0;
-            for(var j = 0;j<currentSummary.data.length;j++){
-              total+=currentSummary.data[j].value;
-            }
-
-            tempobject.y.push(Number(total/currentSummary.data.length));
-            datapoints.push(tempobject);
-            datapoints.lastUpdated=currentDate;
+          if(showLoading){
+            $ionicLoading.hide();
           }
-          console.log("actual ",datapoints);
-          $scope.chartData ={
-            series: ["Names"],
-            data:datapoints
-          };
-          $scope.chartType = "bar";
-        }else{
-          $ionicPopup.alert({
-            title: 'Error',
-            template: data.error,
-            buttons: [
-              {
-                text: '<b>Ok</b>',
-                type: 'button-assertive',
+
+          if(!data.error){
+
+            var monthlyPrice = currentUser.energy.price[currentUser.houseSize];
+            var dailyPrice = monthlyPrice/30;
+            var hourlyPrice = dailyPrice/24;
+
+            var summaryData= data.fuses;
+
+            var names = [];
+
+            var datapoints = [];
+            var datapoints2 = [];
+            var tempobject = [];
+            var tempobject2 = [];
+
+            for(var i = 0;i<summaryData.length;i++){
+              var currentSummary = summaryData[i];
+              
+              names.push(currentSummary.name);
+              var total = 0;
+              for(var j = 0;j<currentSummary.data.length;j++){
+                total+=currentSummary.data[j].value;
               }
-            ]
-           });
-        }
-      }).finally(function() {
-        // Stop the ion-refresher from spinning
-        $scope.$broadcast('scroll.refreshComplete');
-      });
+
+              tempobject.push(Number(total/currentSummary.data.length).toFixed(2));
+
+              var kwatts = (Number(total/currentSummary.data.length) * 3)/1000;
+              tempobject2.push((dailyPrice*kwatts).toFixed(2));
+              $scope.lastUpdated=currentDate;
+            }
+            datapoints.push(tempobject);
+            datapoints2.push(tempobject2);
+            $scope.labels=names;
+            $scope.data = datapoints;
+            $scope.priceData= datapoints2;
+            FuseService.storeSummary(date,{
+              labels:names,
+              data:datapoints,
+              priceData:datapoints2
+            });
+          }else{
+            $ionicPopup.alert({
+              title: 'Error',
+              template: data.error,
+              buttons: [
+                {
+                  text: '<b>Ok</b>',
+                  type: 'button-assertive',
+                }
+              ]
+             });
+          }
+        }).finally(function() {
+          // Stop the ion-refresher from spinning
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      }
+      
     };
+    console.log("CONTROLLER INITING");
     $scope.init();
 })
 .controller('FusesCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
-    
-
-    $ionicModal.fromTemplateUrl('templates/editfuse.html', {
-      scope: $scope,
-    }).then(function(popover) {
-      $scope.editFusePopover = popover;
-    });
-  
 
     $scope.init = function(){
       if(FuseService.isCached()){
@@ -353,15 +369,46 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       });
     }
   };
-  
+
   $scope.openEdit = function(id,$event){
-    $scope.selectedFuse = FuseService.getFuse(id);
-    console.log($scope.selectedFuse);
-    $scope.editFusePopover.show();
+    if ($event.stopPropagation) $event.stopPropagation();
+    if ($event.preventDefault) $event.preventDefault();
+    $event.cancelBubble = true;
+    $event.returnValue = false;
+
+    $ionicModal.fromTemplateUrl('templates/editfuse.html', {
+      scope: $scope,
+    }).then(function(popover) {
+      $scope.selectedFuse = FuseService.getFuse(id);
+      console.log($scope.selectedFuse);
+      $scope.editFusePopover = popover;
+      $scope.editFusePopover.show();
+    });
+    
   };
   $scope.closeEdit = function(){
     $scope.editFusePopover.hide();
+    $scope.editFusePopover.remove();
   };
+  $scope.openData = function(id,$event){
+    console.log("opened");
+    $ionicModal.fromTemplateUrl('templates/fusedata.html', {
+      scope: $scope,
+    }).then(function(popover) {
+      $scope.selectedFuse = FuseService.getFuse(id);
+      $scope.showFuseData = popover;
+      console.log($scope.selectedFuse);
+      $scope.showFuseData.show();
+      $scope.$broadcast('modalOpened', id);
+    });
+    
+  };
+  $scope.closeData = function(){
+    $scope.$broadcast('modalClosed', null);
+    $scope.showFuseData.hide();
+    $scope.showFuseData.remove();
+  };
+
   $scope.updateFuse = function(){
     console.log($scope.selectedFuse);
 
@@ -445,4 +492,61 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
   };
 
   $scope.init();
+})
+.controller('LiveCtrl', function($scope,$interval, $ionicModal, $timeout, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,SocketService) {
+  var maximum =300;
+
+  var id = 0;
+
+  $scope.labels=[];
+  $scope.data = [[0]];
+  $scope.options = { animation: false, showScale : true, showTooltips : false, pointDot: false, datasetStrokeWidth : 0.5, };
+
+  var live = null;
+
+  var fillSpace = 0;
+
+  SocketService.on('dataAdded',function(data){
+      console.log("DATARECEIVED ",data);
+      if(data.fuseID == id){
+        console.log("Updated");
+        $scope.labels.push('');
+        fillSpace=data.value;
+        $scope.data[0].push(data.value);
+      }
+      $scope.$apply();
+    });
+
+  $scope.$on('modalOpened', function(event, args) {
+
+    id=args;
+    live = $interval(function () {
+      getLiveChartData(true);
+    }, 1000);
+  });
+  
+  function getLiveChartData (first) {
+    if ($scope.data[0].length) {
+      $scope.labels = $scope.labels.slice(1);
+      $scope.data[0] = $scope.data[0].slice(1);
+    }
+
+    while ($scope.data[0].length < maximum) {
+      $scope.labels.push('');
+      if(fillSpace>0)
+        $scope.data[0].push(fillSpace);
+      else
+        $scope.data[0].push(0);
+    }
+    if(first){
+      $interval.cancel(live);
+      live = $interval(function () {
+        getLiveChartData(false);
+      }, 40);
+    }
+  }
+
+  $scope.$on('modalClosed', function(event, args) {
+    $interval.cancel(live);
+  });
 });

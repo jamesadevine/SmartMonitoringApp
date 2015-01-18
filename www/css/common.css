@@ -39,12 +39,16 @@ a:visited{
 .house-selected{
     border: 5px solid #b4111a;
 }
-.medium{
-    font-size: 40px;
+.max-chart{
+    max-width:500px;
+    max-height: 400px;
+    margin-bottom: 10px;
 }
-.large{
-    font-size: 40px;
+.see-through{
+    background-color: rgba(255,255,255,0.3);
+    border-top: solid 1px #d4d4d4;
 }
+
 /*
 .avatar {
     float: left;

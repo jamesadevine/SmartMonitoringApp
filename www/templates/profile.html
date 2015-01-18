@@ -52,8 +52,9 @@
         <button class="button button-block button-assertive" ng-click="updateUser();"><i class="ion-refresh icon-left"></i> Update</button>
       </label>
     </div>
-    <div class="bar bar-footer bar-light" ng-show="chartData.data.lastUpdated">
-      <div>Last Synced: {{user.lastUpdated}}</div>
-    </div>
+    
   </ion-content>
+  <div class="bar bar-footer bar-light" ng-show="user.lastUpdated">
+    <div>Last Synced: {{user.lastUpdated}}</div>
+  </div>
 </ion-view>
