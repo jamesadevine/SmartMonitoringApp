@@ -14,11 +14,11 @@
         </select>
       </ion-item>
       <ion-item>
-        <div class="max-chart" id="avenergyconsump">
+        <div class="max-chart">
           <label>
             Average Energy Consumption per Fuse
           </label>
-          <canvas width='100%' height='100%' id="barChart1" class="chart chart-bar max-chart" data="data" options="options" labels="labels" ng-hide="data[0].length===0"></canvas>
+          <canvas width='100%' height='100%' class="chart chart-bar max-chart" data="data" options="options" labels="labels" ng-hide="data[0].length===0"></canvas>
         </div>
         <div ng-show="data[0].length===0">
           <div class="item-text-wrap">
@@ -31,7 +31,7 @@
           <label>
             Average Price per Fuse per Day
           </label>
-          <canvas width='100%' height='100%' id="barChart2" class="chart chart-bar max-chart" data="priceData" options="options" labels="labels" ng-hide="data[0].length===0"></canvas>
+          <canvas width='100%' height='100%' class="chart chart-bar max-chart" data="priceData" options="options" labels="labels" ng-hide="data[0].length===0"></canvas>
         </div>
         <div ng-show="data[0].length===0">
           <div class="item-text-wrap">

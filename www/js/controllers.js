@@ -126,25 +126,10 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
     };
 })
 .controller('HomeCtrl', function($rootScope,$document,$scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,CacheService,FuseService) {
-    //$state.go($state.current, {}, {reload: true});
-    //Chart.defaults.global.responsive=false;
-    /*
-    $scope.labels=[];
-    $scope.data = [[]];
-    $scope.priceData= [[]];
-    */
 
     var currentDate = moment().format("DD-MM-YYYY");
 
-    function dateGenerator(){
-      var dateArray = [];
-      for(var i=0;i<15;i++)
-        dateArray.push(moment().subtract(i,'days').format("DD-MM-YYYY"));
-      console.log(dateArray);
-      return dateArray;
-    }
-
-    $scope.dates = dateGenerator();
+    $scope.dates = dateGenerator(15);
     $scope.selectedItem = $scope.dates[0];
 
     $scope.init = function(){
@@ -167,61 +152,24 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       }
       if(!showLoading){
         var cached = FuseService.getSummary(date);
-        console.log("cached: ",cached.names);
+        console.log("cached: ",cached.data);
         $scope.labels=cached.labels;
-        $scope.data = cached.data;
+        $scope.data = cached.energyData;
         $scope.priceData= cached.priceData;
 
       }else{
         FuseAPI.summary(UserService.currentUser().id,date).then(function(data){
           console.log("DATA",JSON.stringify(data));
-          
-          var currentUser = UserService.currentUser();
 
           if(showLoading){
             $ionicLoading.hide();
           }
 
           if(!data.error){
-
-            var monthlyPrice = currentUser.energy.price[currentUser.houseSize];
-            var dailyPrice = monthlyPrice/30;
-            var hourlyPrice = dailyPrice/24;
-
-            var summaryData= data.fuses;
-
-            var names = [];
-
-            var datapoints = [];
-            var datapoints2 = [];
-            var tempobject = [];
-            var tempobject2 = [];
-
-            for(var i = 0;i<summaryData.length;i++){
-              var currentSummary = summaryData[i];
-              
-              names.push(currentSummary.name);
-              var total = 0;
-              for(var j = 0;j<currentSummary.data.length;j++){
-                total+=currentSummary.data[j].value;
-              }
-
-              tempobject.push(Number(total/currentSummary.data.length).toFixed(2));
-
-              var kwatts = (Number(total/currentSummary.data.length) * 3)/1000;
-              tempobject2.push((dailyPrice*kwatts).toFixed(2));
-              $scope.lastUpdated=currentDate;
-            }
-            datapoints.push(tempobject);
-            datapoints2.push(tempobject2);
-            $scope.labels=names;
-            $scope.data = datapoints;
-            $scope.priceData= datapoints2;
-            FuseService.storeSummary(date,{
-              labels:names,
-              data:datapoints,
-              priceData:datapoints2
-            });
+            $scope.labels=data.summary.labels;
+            $scope.data = data.summary.energyData;
+            $scope.priceData= data.summary.priceData;
+            FuseService.storeSummary(date,data.summary);
           }else{
             $ionicPopup.alert({
               title: 'Error',
@@ -541,4 +489,50 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
   $scope.$on('modalClosed', function(event, args) {
     $interval.cancel(live);
   });
+})
+.controller('SevenDayCtrl', function($scope,$interval, $ionicModal, $timeout, UserAPI,FuseAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
+  var currentDate = moment();
+  $scope.$on('modalOpened', function(event, args) {
+    $scope.getSummary(args);
+  });
+
+  $scope.getSummary = function(id){
+    console.log($scope.selectedFuse);
+
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in',
+      showBackdrop: true,
+      showDelay: 0
+    });
+      
+    FuseAPI.sevenDaySummary(UserService.currentUser().id,id).then(function(data){
+      console.log("DATA",data);
+      if(!data.error){
+        
+        $scope.labels=data.summary.labels;
+        $scope.data=data.summary.energyData;
+      }else{
+        $ionicPopup.alert({
+          title: 'Error',
+          template: data.error,
+          buttons: [
+            {
+              text: '<b>Ok</b>',
+              type: 'button-assertive',
+            }
+          ]
+         });
+      }
+      $ionicLoading.hide();
+    });
+  };
 });
+
+function dateGenerator(numberOfDays){
+  var dateArray = [];
+  for(var i=0;i<numberOfDays;i++)
+    dateArray.push(moment().subtract(i,'days').format("DD-MM-YYYY"));
+  console.log(dateArray);
+  return dateArray;
+}

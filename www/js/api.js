@@ -4,8 +4,8 @@ angular.module('smartfuse.api', ['smartfuse.services'])
   return {
     fuse:function(id,userID){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
-            data:{email:email,password:password},
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse',
+            data:{fuseID:id,userID:userID},
             method: 'POST',
             headers:{
               "Content-Type": "application/json"
@@ -47,6 +47,26 @@ angular.module('smartfuse.api', ['smartfuse.services'])
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/fuses/summary',
             data:{userID:userID,date:date},
+            method: 'POST',
+            headers:{
+              "Content-Type": "application/json"
+            }
+          }).then(function (response) {
+            console.log("RESP", response);
+           if (response.data.error) {
+               return null;
+           } else {
+               console.log(response.data);
+               return response.data;
+           }
+          }, function(err) {
+            return err.data;
+        });
+    },
+    sevenDaySummary:function(userID,fuseid){
+      return $http({
+            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/summary',
+            data:{userID:userID,fuseID:fuseid},
             method: 'POST',
             headers:{
               "Content-Type": "application/json"

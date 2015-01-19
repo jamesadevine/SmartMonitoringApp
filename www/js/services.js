@@ -78,8 +78,10 @@ angular.module('smartfuse.services', [])
   var socket = io.connect("http://scc-devine.lancs.ac.uk:8000");
   var socketInstance = socketFactory({
       ioSocket:socket
-    });
-  socketInstance.emit('setUserID',{userid:UserService.currentUser().id});
-  socketInstance.forward('dataAdded');
+  });
+  
+  socketInstance.on('connect',function() {
+    socket.emit('setUserID',{userid:UserService.currentUser().id});
+  });
   return socketInstance;
 });

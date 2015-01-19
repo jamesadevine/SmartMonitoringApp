@@ -8,8 +8,18 @@
   <ion-content>
     <div class="list" id="container">
       <div class="item" ng-controller="LiveCtrl">
+        <label>
+          Live Data:
+        </label>
         <canvas width="500"  height="256" class="chart chart-line chart-xl ng-isolate-scope" data="data" options="options" labels="labels" style="width: 1027px; height: 256px;"></canvas>
       </div>
+      <div class="item" ng-controller="SevenDayCtrl">
+        <label>
+          Past Seven Days:
+        </label>
+        <canvas width="500"  height="256" class="chart chart-bar" data="data" labels="labels" style="width: 1027px; height: 256px;"></canvas>  
+      </div>
     </div>
+      
   </ion-content>
 </ion-modal-view>
