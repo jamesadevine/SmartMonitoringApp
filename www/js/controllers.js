@@ -125,23 +125,15 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
       });
     };
 })
-.controller('HomeCtrl', function($rootScope,$scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,CacheService,FuseService) {
+.controller('HomeCtrl', function($rootScope,$document,$scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,CacheService,FuseService) {
     //$state.go($state.current, {}, {reload: true});
-
-   /* $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-      console.log("TEST")
-       if(toState.url == '/home'){
-        $scope.init(); 
-        //$state.go($state.current, {}, {reload: true});
-        console.log("should be reloading?");
-       }
-        
-    });
+    //Chart.defaults.global.responsive=false;
     /*
     $scope.labels=[];
     $scope.data = [[]];
     $scope.priceData= [[]];
     */
+
     var currentDate = moment().format("DD-MM-YYYY");
 
     function dateGenerator(){
@@ -179,6 +171,7 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
         $scope.labels=cached.labels;
         $scope.data = cached.data;
         $scope.priceData= cached.priceData;
+
       }else{
         FuseAPI.summary(UserService.currentUser().id,date).then(function(data){
           console.log("DATA",JSON.stringify(data));
@@ -246,7 +239,6 @@ angular.module('smartfuse.controllers', ['smartfuse.api'])
           $scope.$broadcast('scroll.refreshComplete');
         });
       }
-      
     };
     console.log("CONTROLLER INITING");
     $scope.init();

@@ -73,7 +73,6 @@ angular.module('smartfuse', ['ionic','btford.socket-io','chart.js', 'smartfuse.c
       'menuContent': {
         templateUrl: "templates/home.html",
         controller:"HomeCtrl",
-        reload:true
       }
     }
   })
