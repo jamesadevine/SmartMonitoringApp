@@ -1,0 +1,20 @@
+{
+	"folders":
+	[
+		{
+			"path": "js"
+		},
+		{
+			"path": "templates"
+		},
+		{
+			"path": "css"
+		},
+		{
+			"path": "lib"
+		},
+		{
+			"path": "img"
+		}
+	]
+}

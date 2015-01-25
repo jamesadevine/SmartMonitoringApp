@@ -1,0 +1,34 @@
+<ion-view view-title="Hubs">
+  <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="loadHubs()">
+    </ion-refresher>
+    <div class="item item-divider themegrey">
+      <div class="item item-divider item-icon-right themegrey row ">
+          <div>Your Hubs</div>
+          <i class="icon ion-plus" ng-click="openAdd()"></i>
+      </div>
+    </div>
+    <ion-list show-delete="false" can-swipe="true">
+      <ion-item class="item-icon-right" ng-repeat="hub in hubs">
+        <div class="col">
+          <h3>{{ hub.name }}</h3>
+          <div class="item-text-wrap">{{ hub.id }}</div>
+        </div>
+        <i class="icon ion-edit" ng-click="openEdit('{{hub.id}}',$event)"></i>
+        <ion-option-button class="button-assertive" ng-click="deleteHub('{{hub.id}}')">
+          Delete
+        </ion-option-button>
+      </ion-item>
+      <div ng-hide="hubs.length">
+        <div class="item item-text-wrap">
+          <p>No hubs found, have you tried pulling down to refresh?</p>
+        </div>
+      </div>
+    </ion-list>
+  </ion-content>
+  <div class="bar bar-footer bar-light" ng-show="hubs.lastUpdated" ng-model="hubs">
+      <div>Last Synced: {{hubs.lastUpdated}}</div>
+  </div>
+</ion-view>

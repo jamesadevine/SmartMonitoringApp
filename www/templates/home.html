@@ -7,10 +7,7 @@
     <ion-list>
       <ion-item class="item-divider item-select themegrey">
           Summary
-        <select ng-change="loadSummary(selectedItem)" ng-model="selectedItem">
-          <option ng-repeat="date in dates" value="{{date}}" >
-            {{date}}
-          </option>
+        <select ng-change="loadSummary(selectedItem)" ng-model="$parent.selectedItem" ng-options="date for date in dates">
         </select>
       </ion-item>
       <ion-item>

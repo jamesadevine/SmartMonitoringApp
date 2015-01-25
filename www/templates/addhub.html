@@ -1,0 +1,19 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">New Hub</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">Hub ID</span>
+        <input type="text" ng-model="newHub.id" ng-minlength=3>
+      </label>
+      <label class="item">
+        <button class="button button-block button-assertive" ng-click="addHub()"><i class="ion-plus icon-left"></i> Add hub</button>
+      </label>
+    </div>
+  </ion-content>
+</ion-modal-view>

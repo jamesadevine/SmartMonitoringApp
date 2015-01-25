@@ -1,17 +1,21 @@
 <ion-view view-title="About">
-  <ion-header-bar class="bar-assertive">
-      <h1 class="title">About</h1>
+  <ion-header-bar class="bar-light">
+      <h1 class="title">Welcome</h1>
   </ion-header-bar>
   <ion-content >
-    <div class="col">
-        <h2 class ="row center">Welcome to the Smart Fuse Project</h1>
-        <p class ="row center">The Smart Fuse project was created by James Devine, supervised by Joe Finney.<br/><br/>This app allows you to see the fuses that you own and see how much energy each fuse is reporting.</p>
-        <div class ="row center">
-          <button class="button button-assertive" ng-click="login()">
-            Login now.
-          </button>
-        </div>
-      </div>
-    </div>
+    <ion-list>
+      <ion-item class="item-text-wrap">
+        The Smart Fuse project was created by James Devine, supervised by Joe Finney. 
+        <br/>
+        <br/>
+        This app allows you to see the fuses that you own and see how much energy each fuse is reporting.
+      </ion-item>
+      <ion-item>
+        <button class="button button-block button-assertive" ng-click="login()">Log in</button>
+      </ion-item>
+      <ion-item ng-controller="RegisterCtrl" >
+        <button class="button button-block button-light" ng-click="register()">Register</button>
+      </ion-item>
+    </ion-list>
    </ion-content>
 </ion-view>
