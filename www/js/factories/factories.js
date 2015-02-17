@@ -1,0 +1,2 @@
+angular.module('smartfuse.services',[]);
+
