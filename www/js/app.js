@@ -2,7 +2,7 @@
 // 'smartfuse.controllers' is found in controllers.js
 // 'smartfuse.api' is found in api.js
 // 'smartfuse.services' is found in services.js
-angular.module('smartfuse', ['ionic','btford.socket-io','chart.js', 'smartfuse.controllers','smartfuse.api','smartfuse.services'])
+angular.module('smartfuse', ['ionic','btford.socket-io','ngJustGage','chart.js', 'smartfuse.controllers','smartfuse.api','smartfuse.services'])
 
 .run(function($ionicPlatform,$rootScope,$state,UserService) {
   
@@ -79,6 +79,7 @@ angular.module('smartfuse', ['ionic','btford.socket-io','chart.js', 'smartfuse.c
       }
     }
   })
+
   .state('app.profile', {
     url: "/profile",
     views: {
@@ -88,6 +89,17 @@ angular.module('smartfuse', ['ionic','btford.socket-io','chart.js', 'smartfuse.c
       }
     }
   })
+
+  .state('app.stats', {
+    url: "/stats",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/stats.html",
+        controller: "StatsCtrl"
+      }
+    }
+  })
+
   .state('app.hubs', {
     url: "/hubs",
     views: {

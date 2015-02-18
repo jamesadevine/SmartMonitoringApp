@@ -1,0 +1,16 @@
+<ion-view cache-view="false" view-title="Stats">
+  <ion-tabs class="tabs-striped  tabs-background-assertive tabs-color-light">
+
+  <ion-tab ng-controller="CarbonCtrl" title="Carbon Emissions" icon-on="icon icon-cloud" icon-off="icon-cloud">
+  </ion-tab>
+
+  <ion-tab cache-view="false" ng-controller="PowerCtrl" title="Power Generation" icon-on="icon-power" icon-off="icon-power">
+    <just-gage width="200" height="200" id="{{ id }}" min="{{ min }}" max="{{ max }}" value="{{ value }}" options="options" title="{{ title }}"></just-gage>
+  </ion-tab>
+
+  <ion-tab ng-controller="HistoricCtrl" title="Historic" icon-on="icon-line-chart" icon-off="icon-line-chart">
+    <!-- Tab 3 content -->
+  </ion-tab>
+
+</ion-tabs>
+</ion-view>
