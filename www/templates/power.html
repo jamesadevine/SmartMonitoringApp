@@ -1,4 +1,4 @@
-<ion-view view-title="Price">
+<ion-view view-title="Power">
   <ion-content ng-cloak>
     <ion-refresher
       pulling-text="Pull to refresh..."
@@ -10,11 +10,14 @@
         <select ng-change="loadSummary(selectedItem)" ng-model="$parent.selectedItem" ng-options="date for date in dates">
         </select>
       </ion-item>
-      <ion-item>
-        <p style="text-align:center;">Historic Energy Prices per MwH (GBP)</p>
-        <canvas id="pricehistoricline" class="chart chart-line" data="pricehistoricdata"
-          labels="pricehistoriclabels" legend="true" series="pricehistoricseries"
-          click="onClick">
+      <ion-item class="item-text-wrap">
+        <p style="text-align:center;">Current Generation Sources in %</p>
+        <canvas id="currentgenerationdoughnut" options="currentgenerationoptions" legend="true" class="chart chart-doughnut" data="currentgenerationdata" colours="currentgenerationdatacolors" labels="currentgenerationlabels">
+        </canvas> 
+      </ion-item>
+      <ion-item class="item-text-wrap">
+        <p style="text-align:center;">Generation Sources Over the Past 24 Hours in %</p>
+        <canvas id="historicgenerationdoughnut" options="currentgenerationoptions" legend="true" class="chart chart-doughnut" data="historicgenerationdata" colours="historicgenerationdatacolors" labels="historicgenerationlabels">
         </canvas> 
       </ion-item>
     </ion-list>

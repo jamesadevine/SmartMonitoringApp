@@ -35,9 +35,10 @@ angular.module('smartfuse', ['ionic','btford.socket-io','ngJustGage','chart.js',
     
     //if the user is not logged in, and they are trying to browse to a secured view...
     if(!UserService.isLoggedIn() && !routeClean(toState.url)) {
+      console.log('not logged in')
       // redirect back to login
-      event.preventDefault();
-      $state.transitionTo('login');
+      //event.preventDefault();
+      $location.path('login');
     }
   });
 })
@@ -109,20 +110,20 @@ angular.module('smartfuse', ['ionic','btford.socket-io','ngJustGage','chart.js',
     }
   })
 
-  .state('app.stats.historic', {
-    url: "/historic",
-    views: {
-      'historic': {
-        templateUrl: "templates/historic.html",
-      }
-    }
-  })
-
   .state('app.stats.power', {
     url: "/power",
     views: {
       'power': {
         templateUrl: "templates/power.html",
+      }
+    }
+  })
+
+  .state('app.stats.price', {
+    url: "/price",
+    views: {
+      'price': {
+        templateUrl: "templates/price.html",
       }
     }
   })
