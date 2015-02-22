@@ -1,0 +1,22 @@
+<ion-view view-title="Price">
+  <ion-content ng-cloak>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="loadSummary(selectedItem,true)">
+    </ion-refresher>
+    <ion-list>
+      <ion-item class="item-divider item-select themegrey">
+        &#160;
+        <select ng-change="loadSummary(selectedItem)" ng-model="$parent.selectedItem" ng-options="date for date in dates">
+        </select>
+      </ion-item>
+      <ion-item>
+        <p style="text-align:center;">Historic Energy Prices per MwH (GBP)</p>
+        <canvas id="pricehistoricline" class="chart chart-line" data="pricehistoricdata"
+          labels="pricehistoriclabels" legend="true" series="pricehistoricseries"
+          click="onClick">
+        </canvas> 
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,16 +1,18 @@
-<ion-view cache-view="false" view-title="Stats">
-  <ion-tabs class="tabs-striped  tabs-background-assertive tabs-color-light">
+<ion-view  view-title="Stats" >
+  
+  <ion-tabs class="tabs-striped  tabs-background-assertive tabs-color-light" class="has-header" >
 
-  <ion-tab ng-controller="CarbonCtrl" title="Carbon Emissions" icon-on="icon icon-cloud" icon-off="icon-cloud">
-  </ion-tab>
+    <ion-tab  on-select='tabReporter()' href="#/app/stats/carbon"  title="Carbon Emissions" icon-on="icon icon-cloud" icon-off="icon-cloud">
+      <ion-nav-view cache-view="false" name="carbon"></ion-nav-view>
+    </ion-tab>
 
-  <ion-tab cache-view="false" ng-controller="PowerCtrl" title="Power Generation" icon-on="icon-power" icon-off="icon-power">
-    <just-gage width="200" height="200" id="{{ id }}" min="{{ min }}" max="{{ max }}" value="{{ value }}" options="options" title="{{ title }}"></just-gage>
-  </ion-tab>
+    <ion-tab on-select='tabReporter()' href="#/app/stats/power" cache-view="false"title="Power Generation" icon-on="icon-power" icon-off="icon-power">
+      <ion-nav-view cache-view="false" name="power"></ion-nav-view>
+    </ion-tab>
 
-  <ion-tab ng-controller="HistoricCtrl" title="Historic" icon-on="icon-line-chart" icon-off="icon-line-chart">
-    <!-- Tab 3 content -->
-  </ion-tab>
+    <ion-tab on-select='tabReporter()' href="#/app/stats/historic" title="Historic" icon-on="icon-money" icon-off="icon-money">
+      <ion-nav-view cache-view="false" name="historic"></ion-nav-view>
+    </ion-tab>
 
-</ion-tabs>
+  </ion-tabs>
 </ion-view>

@@ -20,6 +20,8 @@ angular.module('smartfuse.controllers')
     //updates the profile of a user 
     $scope.updateUser = function(){
 
+      console.log($scope.user);
+
       //update the cached instance...
       UserService.login($scope.user);
 
@@ -39,9 +41,9 @@ angular.module('smartfuse.controllers')
 
         //check if there is an error message
         if(!data.error){
-
+          console.log(data);
           //close the login
-          $scope.closeLogin();
+          //$scope.closeLogin();
         }else{
 
           //show pop up if there is an error...

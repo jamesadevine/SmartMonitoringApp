@@ -100,6 +100,33 @@ angular.module('smartfuse', ['ionic','btford.socket-io','ngJustGage','chart.js',
     }
   })
 
+  .state('app.stats.carbon', {
+    url: "/carbon",
+    views: {
+      'carbon': {
+        templateUrl: "templates/carbon.html",
+      }
+    }
+  })
+
+  .state('app.stats.historic', {
+    url: "/historic",
+    views: {
+      'historic': {
+        templateUrl: "templates/historic.html",
+      }
+    }
+  })
+
+  .state('app.stats.power', {
+    url: "/power",
+    views: {
+      'power': {
+        templateUrl: "templates/power.html",
+      }
+    }
+  })
+
   .state('app.hubs', {
     url: "/hubs",
     views: {

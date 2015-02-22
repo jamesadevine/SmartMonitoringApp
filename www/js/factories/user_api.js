@@ -41,7 +41,7 @@ angular.module('smartfuse.api')
     update:function(id,name,email,countryCode,houseSize){
       return $http({
           url:'http://scc-devine.lancs.ac.uk:8000/api/user',
-          data:{id:id,name:email,email:email,countryCode:countryCode,houseSize:houseSize},
+          data:{id:id,name:name,email:email,countryCode:countryCode,houseSize:houseSize},
           method: 'PUT',
           headers:{
             "Content-Type": "application/json"

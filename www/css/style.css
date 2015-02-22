@@ -88,7 +88,20 @@ a:visited{
     align-items: center;
 }
 
+.YELLOW{
+    color:orange !important;
+}
+.RED{
+    color:red !important;
+}
 
+.GREEN{
+    color:green !important;
+}
+
+.bigger{
+    font-size: 14pt !important;
+}
 /*
   ADDITIONAL ICONS!!
 */
@@ -125,7 +138,33 @@ a:visited{
     content: "\f201";
 }
 
+.icon-money:before {
+    font-family: "fontawesome";
+    content: "\f0d6";
+}
+
 .icon-power:before {
     font-family: "fontawesome";
     content: "\f011";
+}
+
+.icon-smile-carbon:before {
+    font-family: "fontawesome";
+    content: "\f118";
+    font-size: 122pt;
+    color:green;
+}
+
+.icon-frown-carbon:before {
+    font-family: "fontawesome";
+    content: "\f119";
+    font-size: 122pt;
+    color: red;
+}
+
+.icon-indifferent-carbon:before {
+    font-family: "fontawesome";
+    content: "\f11a";
+    color:orange;
+    font-size: 122pt;
 }
