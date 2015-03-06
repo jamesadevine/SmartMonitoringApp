@@ -4,9 +4,9 @@ angular.module('smartfuse.api')
   return {
     login:function(email,password){
       return $http({
-          url:'http://scc-devine.lancs.ac.uk:8000/api/user/login',
-          data:{email:email,password:password},
-          method: 'POST',
+          url:'http://scc-devine.lancs.ac.uk:8000/api/user/',
+          params:{email:email,password:password},
+          method: 'GET',
           headers:{
             "Content-Type": "application/json"
           }
@@ -22,7 +22,7 @@ angular.module('smartfuse.api')
     },
     register:function(email,password,name){
       return $http({
-          url:'http://scc-devine.lancs.ac.uk:8000/api/user/register',
+          url:'http://scc-devine.lancs.ac.uk:8000/api/user/',
           data:{email:email,password:password,name:name},
           method: 'POST',
           headers:{
