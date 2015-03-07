@@ -598,6 +598,14 @@
 				"buffer_size": 1223,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "js/factories/user_api.js",
+			"settings":
+			{
+				"buffer_size": 3842,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -632,6 +640,14 @@
 	},
 	"file_history":
 	[
+		"/Users/James/Desktop/SCC312/source/Generate.java",
+		"/Users/James/Desktop/SCC312/source/SyntaxAnalyser.java",
+		"/Users/James/Desktop/SCC312/source/AbstractGenerate.java",
+		"/Users/James/Desktop/SCC312/source/AbstractSyntaxAnalyser.java",
+		"/Users/James/Desktop/SCC312/source/CompilationException.java",
+		"/Users/James/Desktop/SCC312/source/Compile.java",
+		"/Users/James/Desktop/SCC312/source/LexicalAnalyser.java",
+		"/Users/James/Desktop/SCC312/source/Token.java",
 		"/Users/James/Desktop/FYP/app/SmartFuse/www/templates/stats.html",
 		"/Users/James/Desktop/FYP/app/SmartFuse/www/templates/historic.html",
 		"/Users/James/Desktop/FYP/app/SmartFuse/www/templates/power.html",
@@ -751,15 +767,7 @@
 		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/Server.java",
 		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/AuctionUser.java",
 		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/AuctionUserImplementation.java",
-		"/Users/James/Desktop/aek/Virtual_tour.html",
-		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/BuyerObject.java",
-		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/SellerImplementation.java",
-		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/BuyerImplementation.java",
-		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/Seller.java",
-		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/Buyer.java",
-		"/Users/James/Desktop/SCC311/BasicAuctioningSystem/AuctionObjectImplementation.java",
-		"/Users/James/Desktop/aek/tour-google.html",
-		"/Users/James/Library/Containers/com.apple.mail/Data/Library/Mail Downloads/E322BFE7-91C8-4FA4-8CDC-35055E78CC9A/tmp.json"
+		"/Users/James/Desktop/aek/Virtual_tour.html"
 	],
 	"find":
 	{
@@ -926,7 +934,7 @@
 	"groups":
 	[
 		{
-			"selected": 9,
+			"selected": 10,
 			"sheets":
 			[
 				{
@@ -1992,8 +2000,8 @@
 						"selection":
 						[
 							[
-								22,
-								27
+								598,
+								598
 							]
 						],
 						"settings":
@@ -2093,6 +2101,123 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "js/factories/user_api.js",
+					"settings":
+					{
+						"buffer_size": 3842,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1296,
+								1296
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "fill",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 458.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
