@@ -1,5 +1,5 @@
 {
-  "name": "SmartFuse",
+  "name": "SmartMonitoring",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",

@@ -22,7 +22,7 @@ angular.module('smartfuse.controllers')
   SocketService.on('dataAdded',function(data){
 
       //check that the data received matches the current fuse we are viewing.
-      if(data.fuseID == fuse.id && data.hubID == fuse.hubID){
+      if(data.applianceID == fuse.id && data.hubID == fuse.hubID){
         //push the data onto the chart
         $scope.labels.push('');
         fillSpace=data.value;

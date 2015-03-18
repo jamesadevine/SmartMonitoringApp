@@ -1,4 +1,4 @@
-<ion-view view-title="Fuses">
+<ion-view view-title="Appliances">
   <ion-content>
     <ion-refresher
       pulling-text="Pull to refresh..."
@@ -7,7 +7,7 @@
     
     <ion-list show-delete="false" can-swipe="true">
       <ion-item class="item-divider item-select themegrey  ">
-          Fuses
+          Appliances
           <select ng-change="swapHub(selectedHub)" ng-model="$parent.selectedHub" ng-options="hubName for hubName in fusesKeys"></select>
       </ion-item>
       <ion-item class="item-icon-right item-avatar-left" ng-click="openData({{fuse.id}},'{{fuse.hubID}}',$event)" ng-repeat="fuse in fuses">
@@ -23,7 +23,7 @@
       </ion-item>
       <div ng-hide="fuses.length">
         <div class="item item-text-wrap">
-          <p>No fuses found, have you tried pulling down to refresh?</p>
+          <p>No appliances found, have you tried pulling down to refresh?</p>
         </div>
       </div>
     </ion-list>

@@ -4,8 +4,8 @@ angular.module('smartfuse.api')
   return {
     fuse:function(id,userID){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse',
-            params:{fuseID:id,userID:userID},
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliance',
+            params:{applianceID:id,userID:userID},
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -22,7 +22,7 @@ angular.module('smartfuse.api')
     },
     fuses:function(userID){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuses',
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliances',
             params:{userID:userID},
             method: 'GET',
             headers:{
@@ -40,7 +40,7 @@ angular.module('smartfuse.api')
     },
     summary:function(userID,date){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuses/summary',
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliances/summary',
             params:{userID:userID,date:date},
             method: 'GET',
             headers:{
@@ -56,10 +56,10 @@ angular.module('smartfuse.api')
             return err.data;
           });
     },
-    sevenDaySummary:function(userID,fuseid,hubid){
+    sevenDaySummary:function(userID,applianceid,hubid){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/summary',
-            params:{userID:userID,fuseID:fuseid,hubID:hubid},
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/summary',
+            params:{userID:userID,applianceID:applianceid,hubID:hubid},
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -74,12 +74,12 @@ angular.module('smartfuse.api')
             return err.data;
           });
     },
-    upload:function(userID,fuseID,hubID,image){
+    upload:function(userID,applianceID,hubID,image){
     return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/upload',
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/upload',
             timeout:10000,
             data:{userID:userID,
-              fuseID:fuseID,
+              applianceID:applianceID,
               hubID:hubID,
               image:image},
             method: 'POST',
@@ -96,14 +96,14 @@ angular.module('smartfuse.api')
             return err.data;
           });
     },
-    edit:function(userID,fuseID,hubID,fuseName,fuseDescription){
+    edit:function(userID,applianceID,hubID,applianceName,applianceDescription){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse',
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliance',
             data:{userID:userID,
-              fuseID:fuseID,
-              fuseName:fuseName,
+              applianceID:applianceID,
+              applianceName:applianceName,
               hubID:hubID,
-              fuseDescription:fuseDescription,
+              applianceDescription:applianceDescription,
             },
             method: 'PUT',
             headers:{
@@ -119,11 +119,11 @@ angular.module('smartfuse.api')
             return err.data;
           });
     },
-    remove:function(userID,fuseID,hubID){
+    remove:function(userID,applianceID,hubID){
       return $http({
-            url:'http://scc-devine.lancs.ac.uk:8000/api/fuse/',
+            url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/',
             data:{userID:userID,
-              fuseID:fuseID,
+              applianceID:applianceID,
               hubID:hubID
             },
             method: 'DELETE',

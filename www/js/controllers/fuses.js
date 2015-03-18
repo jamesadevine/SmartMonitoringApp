@@ -49,17 +49,17 @@ angular.module('smartfuse.controllers')
     }
 
     //check for errors
-    if(!data.error){
+    if(!data.error && Object.getOwnPropertyNames(data.appliances).length > 0){
       //get the keys (hub names)
-      $scope.fusesKeys = Object.keys(data.fuses);
+      $scope.fusesKeys = Object.keys(data.appliances);
       //check if the selectHub exists
       if(!$scope.selectedHub)
         $scope.selectedHub = $scope.fusesKeys[0];
       //set the fuse data
-      $scope.fuses = data.fuses[$scope.selectedHub];
+      $scope.fuses = data.appliances[$scope.selectedHub];
       //cache the fuse data
-      FuseService.storeFuses(data.fuses);
-    }else{
+      FuseService.storeFuses(data.appliances);
+    }else if(data.error){
       //show an alert if there is an error
       $ionicPopup.alert({
         title: 'Error',
@@ -71,6 +71,8 @@ angular.module('smartfuse.controllers')
           }
         ]
        });
+    }else{
+      $scope.fuses =[];
     }
   }).finally(function() {
     // Stop the ion-refresher from spinning
