@@ -6,6 +6,7 @@ angular.module('smartfuse.api')
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/stats',
             params:{date:date},
+            timeout:10000,
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -17,7 +18,7 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     historic:function(date){
@@ -25,6 +26,7 @@ angular.module('smartfuse.api')
             url:'http://scc-devine.lancs.ac.uk:8000/api/stats/historic',
             params:{date:date},
             method: 'GET',
+            timeout:10000,
             headers:{
               "Content-Type": "application/json"
             }
@@ -35,13 +37,14 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     current:function(date){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/stats/current',
             params:{date:date},
+            timeout:10000,
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -53,7 +56,7 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
   };

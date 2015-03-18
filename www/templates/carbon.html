@@ -10,7 +10,12 @@
         <select ng-change="loadSummary(selectedItem)" ng-model="$parent.selectedItem" ng-options="date for date in dates">
         </select>
       </ion-item>
-      <ion-item class="item-text-wrap">
+      <ion-item ng-show="!currentCarbon.status">
+        <div class="item-text-wrap">
+            <p>No carbon data is available</p>
+          </div>
+      </ion-item>
+      <ion-item class="item-text-wrap" ng-show="currentCarbon.status">
         <label ng-class="{'RED':'icon-frown-carbon','YELLOW':'icon-indifferent-carbon','GREEN':'icon-smile-carbon'}[currentCarbon.status]" class="center"></label>
         <div class="col">
         <div class="{{ currentCarbon.status }} " ng-if="currentCarbon.status=='RED'" style="text-align:center;">Currently the carbon level is  <b>{{ currentCarbon.status}}</b>. Please don't use your big appliances now, wait until the status is yellow or green, and you could save the Earth from {{currentCarbon.saving}}% more carbon.</div>
@@ -18,7 +23,7 @@
         <div class="{{ currentCarbon.status }} " ng-if="currentCarbon.status=='GREEN'" style="text-align:center;">Currently the carbon level is  <b>{{ currentCarbon.status}}</b>. If you use your big appliances now, you could save the Earth from {{currentCarbon.saving}}% more carbon.</div>
         </div>
       </ion-item>
-      <ion-item>
+      <ion-item ng-show="currentCarbon.status">
         <canvas id="carbonhistoricline" class="chart chart-line" data="carbonhistoricdata"
           labels="carbonhistoriclabels" legend="true" series="carbonhistoricseries"
           click="onClick">

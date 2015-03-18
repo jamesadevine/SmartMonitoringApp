@@ -6,6 +6,7 @@ angular.module('smartfuse.api')
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance',
             params:{applianceID:id,userID:userID},
+            timeout:10000,
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -17,13 +18,14 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     fuses:function(userID){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliances',
             params:{userID:userID},
+            timeout:10000,
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -35,13 +37,14 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     summary:function(userID,date){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliances/summary',
             params:{userID:userID,date:date},
+            timeout:10000,
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -53,13 +56,14 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     sevenDaySummary:function(userID,applianceid,hubid){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/summary',
             params:{userID:userID,applianceID:applianceid,hubID:hubid},
+            timeout:10000,
             method: 'GET',
             headers:{
               "Content-Type": "application/json"
@@ -71,7 +75,7 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     upload:function(userID,applianceID,hubID,image){
@@ -93,7 +97,7 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     edit:function(userID,applianceID,hubID,applianceName,applianceDescription){
@@ -105,6 +109,7 @@ angular.module('smartfuse.api')
               hubID:hubID,
               applianceDescription:applianceDescription,
             },
+            timeout:10000,
             method: 'PUT',
             headers:{
               "Content-Type": "application/json"
@@ -116,7 +121,7 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     },
     remove:function(userID,applianceID,hubID){
@@ -126,6 +131,7 @@ angular.module('smartfuse.api')
               applianceID:applianceID,
               hubID:hubID
             },
+            timeout:10000,
             method: 'DELETE',
             headers:{
               "Content-Type": "application/json"
@@ -137,7 +143,7 @@ angular.module('smartfuse.api')
               return response.data;
             }
           }, function(err) {
-            return err.data;
+            return {error: "The server timed out!"};
           });
     }
   };
