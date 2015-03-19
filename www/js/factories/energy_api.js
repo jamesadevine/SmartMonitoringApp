@@ -2,6 +2,7 @@ angular.module('smartfuse.api')
 
 .factory('EnergyAPI', function ($http){
   return {
+    //get all stats
     stats:function(date){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/stats',
@@ -21,6 +22,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //get historic stats only (Unused)
     historic:function(date){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/stats/historic',
@@ -40,6 +42,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //get Current stats only (Unused)
     current:function(date){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/stats/current',

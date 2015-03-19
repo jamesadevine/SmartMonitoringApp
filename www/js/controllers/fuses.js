@@ -1,5 +1,8 @@
 angular.module('smartfuse.controllers')
 
+/*
+  All usages of Fuse used in this controller, should be replaced with 'Appliance'
+*/
 .controller('FusesCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
 
   //check if data is cached

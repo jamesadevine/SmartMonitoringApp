@@ -1,7 +1,13 @@
 angular.module('smartfuse.api')
 
+/*
+  Appliances were previously known as fuses, but the project was rebranded too late
+
+  All usages of the word fuse can be replaced by Appliance.
+*/
 .factory( 'FuseAPI', function ($http){
   return {
+    //get a single appliance
     fuse:function(id,userID){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance',
@@ -21,6 +27,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //get all appliances
     fuses:function(userID){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliances',
@@ -40,6 +47,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //get the overall summary for all appliances
     summary:function(userID,date){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliances/summary',
@@ -59,6 +67,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //get the seven day summary for a particular appliance
     sevenDaySummary:function(userID,applianceid,hubid){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/summary',
@@ -78,6 +87,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //upload an image for a particular appliance
     upload:function(userID,applianceID,hubID,image){
     return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/upload',
@@ -100,6 +110,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //edit a particular appliance
     edit:function(userID,applianceID,hubID,applianceName,applianceDescription){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance',
@@ -124,6 +135,7 @@ angular.module('smartfuse.api')
             return {error: "The server timed out!"};
           });
     },
+    //remove and appliance
     remove:function(userID,applianceID,hubID){
       return $http({
             url:'http://scc-devine.lancs.ac.uk:8000/api/appliance/',

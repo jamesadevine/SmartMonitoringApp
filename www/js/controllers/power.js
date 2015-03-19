@@ -2,17 +2,9 @@ angular.module('smartfuse.controllers')
 
 .controller('PowerCtrl', function($scope, $ionicModal, $timeout,FuseAPI, UserAPI,$ionicLoading,$state,$ionicPopup,UserService,FuseService) {
   
-  $scope.title = 'My gauge';
-  $scope.id = "gauge";
-  $scope.value = 1000;
-  $scope.options = {
-    levelColors: ['#CE1B21', '#D0532A', '#FFC414', '#85A137'],
-    //width:'80%',
-    //height:'100%',
-    relativeGaugeSize:true,
-    //titleFontColor:
-    //valueFontColor
+  //tell the parent controller what the current tab is!
+  $scope.tabReporter = function(){
+    $scope.$emit('tabChanged', 1);
   };
-  $scope.min = 0;
-  $scope.max = 1000;
+
 });
